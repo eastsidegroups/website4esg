@@ -16,12 +16,12 @@ const Footer = () => {
 
                     <div className="flex flex-col md:items-end">
                         <div className="flex space-x-6 mb-4">
-                            <a href="mailto:eastsidegroups@gmail.com" className="text-gray-400 hover:text-white transition-colors">
+                            <a href="mailto:info@eastsidegroups.com" className="text-gray-400 hover:text-white transition-colors">
                                 Email Us
                             </a>
                             <span className="text-gray-600">|</span>
-                            <a href="tel:+13603620505" className="text-gray-400 hover:text-white transition-colors">
-                                +1 (360) 362-0505
+                            <a href="tel:+14258661514" className="text-gray-400 hover:text-white transition-colors">
+                                +1 (425) 866-1514
                             </a>
                         </div>
                         <p className="text-xs text-gray-500">
