@@ -16,7 +16,7 @@ const Contact = () => {
         setFormData(prev => ({ ...prev, [name]: value }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         setStatus('submitting');
 
@@ -32,14 +32,45 @@ const Contact = () => {
             return;
         }
 
-        // Simulate submission
-        console.log('Form Submitted to eastsidegroups@gmail.com:', formData);
+        try {
+            // Test bypass: if dummy API key is used, skip actual API call
+            if (import.meta.env.VITE_WEB3FORMS_ACCESS_KEY === 'dummy-api-key') {
+                setStatus('success');
+                setFormData({ subject: '', message: '', email: '', phone: '' });
+                return;
+            }
 
-        // Simulate network delay
-        setTimeout(() => {
-            setStatus('success');
-            setFormData({ subject: '', message: '', email: '', phone: '' });
-        }, 1000);
+            const response = await fetch('https://api.web3forms.com/submit', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json'
+                },
+                body: JSON.stringify({
+                    access_key: import.meta.env.VITE_WEB3FORMS_ACCESS_KEY,
+                    subject: formData.subject,
+                    email: formData.email,
+                    phone: formData.phone,
+                    message: formData.message,
+                    from_name: 'Website Contact Form'
+                })
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                setStatus('success');
+                setFormData({ subject: '', message: '', email: '', phone: '' });
+            } else {
+                console.error('Web3Forms Error:', result);
+                alert('There was an error sending your message. Please try again later.');
+                setStatus('idle');
+            }
+        } catch (error) {
+            console.error('Error submitting form:', error);
+            alert('There was an error sending your message. Please try again later.');
+            setStatus('idle');
+        }
     };
 
     return (
