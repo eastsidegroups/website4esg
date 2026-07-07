@@ -1,5 +1,6 @@
 {
   "hosting": {
+    "site": "website4esg",
     "public": "dist",
     "ignore": [
       "firebase.json",
