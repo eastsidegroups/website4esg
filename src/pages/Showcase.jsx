@@ -1,6 +1,42 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 const Showcase = () => {
+    const [os, setOs] = useState('unknown');
+
+    useEffect(() => {
+        const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+        if (/android/i.test(userAgent)) {
+            setOs('android');
+        } else if (/iPad|iPhone|iPod|Mac/i.test(userAgent) && !window.MSStream) {
+            setOs('ios');
+        } else {
+            setOs('other');
+        }
+    }, []);
+
+    const getStoreInfo = (androidUrl, iosUrl) => {
+        if (os === 'ios') {
+            return {
+                text: 'View on Apple App Store',
+                url: iosUrl
+            };
+        }
+        return {
+            text: 'View on Google Play Store',
+            url: androidUrl
+        };
+    };
+
+    const mnemosyneStore = getStoreInfo(
+        "https://play.google.com/store/search?q=Mnemosyne%20Journal&c=apps",
+        "https://apps.apple.com/us/iphone/search?term=mnemosyne%20journal"
+    );
+
+    const solitaireStore = getStoreInfo(
+        "https://play.google.com/store/search?q=Solitaire%20Win-Only&c=apps",
+        "https://apps.apple.com/us/iphone/search?term=solitaire%20win-only"
+    );
+
     return (
         <div className="pt-24 pb-12 min-h-screen">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -20,9 +56,9 @@ const Showcase = () => {
                                 alt="Mnemosyne Journal Feature Graphic" 
                                 className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                             />
-                            <a href="https://play.google.com/store/apps/details?id=com.newmnemosyne.app&hl=en_US" target="_blank" rel="noopener noreferrer" className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                            <a href={mnemosyneStore.url} target="_blank" rel="noopener noreferrer" className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                                 <span className="px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white rounded-full font-semibold transition-colors shadow-lg">
-                                    View on Google Play
+                                    {mnemosyneStore.text}
                                 </span>
                             </a>
                         </div>
@@ -33,11 +69,8 @@ const Showcase = () => {
                                 In an era where every thought seems destined for social media, Mnemosyne Journal brings back the sanctity of the traditional paper journal. Your true mood and authentic thoughts deserve a private place to call home. Engineered for complete local privacy, Mnemosyne is designed to be a faithful digital replication of a sealed notebook—safeguarding your most honest reflections.
                             </p>
                             <div className="pt-4 border-t border-gray-800">
-                                <p className="text-sm text-gray-400 mb-3">
-                                    <span className="text-gray-200 font-semibold">iOS/macOS Users:</span> Play Store not required! Visit our Web App below, then use <span className="text-white font-medium">"Add to Home Screen"</span> or <span className="text-white font-medium">"Add to Dock"</span> to install it like a native app.
-                                </p>
-                                <a href="https://app.newmnemosyne.com" target="_blank" rel="noopener noreferrer" className="inline-flex items-center px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white rounded-lg transition-colors text-sm font-medium">
-                                    Open Web App
+                                <a href={mnemosyneStore.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white rounded-lg transition-colors text-sm font-medium w-full justify-center">
+                                    {mnemosyneStore.text}
                                 </a>
                             </div>
                         </div>
@@ -51,9 +84,9 @@ const Showcase = () => {
                                 alt="Solitaire Win-Only Feature Graphic" 
                                 className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                             />
-                            <a href="https://play.google.com/store/search?q=Solitaire+Win-Only&c=apps" target="_blank" rel="noopener noreferrer" className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                            <a href={solitaireStore.url} target="_blank" rel="noopener noreferrer" className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                                 <span className="px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white rounded-full font-semibold transition-colors shadow-lg">
-                                    View on Google Play
+                                    {solitaireStore.text}
                                 </span>
                             </a>
                         </div>
@@ -63,23 +96,10 @@ const Showcase = () => {
                             <p className="text-gray-400 mb-6 flex-grow">
                                 Tired of unwinnable games? Enjoy a relaxing game of Solitaire where every single deal is 100% winnable! Perfect for unwinding, testing your skills, and enjoying guaranteed victories. Experience the classic card game with a refreshing twist that ensures a satisfying outcome every time you play.
                             </p>
-                            <div className="pt-4 border-t border-gray-800 space-y-4">
-                                <div>
-                                    <p className="text-sm text-gray-400 mb-2">
-                                        <span className="text-gray-200 font-semibold">iOS Users:</span> Install the app directly from the App Store.
-                                    </p>
-                                    <a href="https://apps.apple.com" target="_blank" rel="noopener noreferrer" className="inline-flex items-center px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white rounded-lg transition-colors text-sm font-medium">
-                                        App Store
-                                    </a>
-                                </div>
-                                <div>
-                                    <p className="text-sm text-gray-400 mb-2">
-                                        <span className="text-gray-200 font-semibold">macOS Users:</span> Visit our Web App below, then use <span className="text-white font-medium">"Add to Dock"</span> in Safari to install it like a native app.
-                                    </p>
-                                    <a href="https://solitaire.eastsidegroups.com" target="_blank" rel="noopener noreferrer" className="inline-flex items-center px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white rounded-lg transition-colors text-sm font-medium">
-                                        Open Web App
-                                    </a>
-                                </div>
+                            <div className="pt-4 border-t border-gray-800">
+                                <a href={solitaireStore.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white rounded-lg transition-colors text-sm font-medium w-full justify-center">
+                                    {solitaireStore.text}
+                                </a>
                             </div>
                         </div>
                     </div>
